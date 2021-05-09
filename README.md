@@ -1,6 +1,16 @@
-# Getting Started with Create React App
+# Assignment for the web developer position at Hyperboliq
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Application spec description
+
+Create a small responsive React web application that searches for movies using Rapid API IMDB "by search" API and lists search results in a selectable list that can be toggled to a card layout with a more information display from the IMDB "By ID or Title" API on selection and a favourites list.
+
+## Resources used
+
+React Bootstrap components [https://react-bootstrap.github.io/]
+RapidAPI for IMDB
+React easy-peasy for state management and storing favourites in localStorage. [https://easy-peasy.vercel.app/]
 
 ## Available Scripts
 
