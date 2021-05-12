@@ -12,6 +12,7 @@ function Favourites() {
         favourites: state.favourites,
         views: state.views,
     }));
+    // console.log(typeof favourites);
 
     return <>
         <Row>
@@ -19,7 +20,12 @@ function Favourites() {
                 <Alert variant='primary'>Showing my favourites</Alert>
             </Col>
         </Row>
-        {typeof favourites === Array ? <Row>
+        <Row>
+            <Col>
+                {views === 'list' ? <MyMainlist titles={Array.from(favourites)}></MyMainlist> : <MyCardlist titles={Array.from(favourites)}></MyCardlist>}
+            </Col>
+        </Row>
+        {/* {typeof favourites === Object ? <Row>
             <Col>
                 {views === 'list' ? <MyMainlist titles={favourites}></MyMainlist> : <MyCardlist titles={favourites}></MyCardlist>}
             </Col>
@@ -27,7 +33,7 @@ function Favourites() {
             <Col>
                 {views === 'list' ? <MyMainlist titles={JSON.parse(localStorage.getItem('favourites'))}></MyMainlist> : <MyCardlist titles={JSON.parse(localStorage.getItem('favourites'))}></MyCardlist>}
             </Col>
-        </Row>}
+        </Row>} */}
     </>
 }
 export default Favourites;

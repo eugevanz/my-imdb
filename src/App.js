@@ -1,4 +1,4 @@
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useStoreActions } from 'easy-peasy';
 import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
@@ -19,10 +19,6 @@ import MyFavourites from './Views/favView';
 import MyToast from './Components/toastee';
 
 function App() {
-  const { favourites } = useStoreState(state => ({
-    favourites: state.favourites,
-  }));
-
   const { saveTitles, clearTitles } = useStoreActions(actions => ({
     saveTitles: actions.saveTitles,
     clearTitles: actions.clearTitles,
@@ -39,9 +35,9 @@ function App() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            {typeof favourites === Array ? <LinkContainer to="/favourites">
+            <LinkContainer to="/favourites">
               <Nav.Link href="#">Favourites</Nav.Link>
-            </LinkContainer>: <></>}
+            </LinkContainer>
           </Nav>
           <Form inline>
             <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(e) => setValue(e.target.value)} value={value}/>

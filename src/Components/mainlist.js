@@ -25,7 +25,7 @@ function MainList({ titles }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {titles.map(title => <MyTableRow key={title.imdb_id} title={title}></MyTableRow>)}
+                    {titles.map((title, index) => <MyTableRow key={index} title={title}></MyTableRow>)}
                 </tbody>
             </Table>
         </> : <>

@@ -20,22 +20,27 @@ let model = {
     }),
 
     // Actions for Favourites
-    favourites: [],
+    // favourites: JSON.parse(localStorage.getItem('favourites')),
+    favourites: localStorage.getItem('favourites') ? JSON.parse(localStorage.getItem('favourites')) : [],
     addFavourites: action((state, payload) => {
+        state.favourites.push(payload);
         console.log(debug(state.favourites));
-        if (typeof state.favourites !== Array) {
-            localStorage.setItem('favourites', JSON.stringify([]));
-            state.favourites = JSON.parse(localStorage.getItem('favourites'));
-            state.favourites.push(payload);
-        } else {
-            state.favourites.push(payload);
-        }
     }),
     saveFavs: thunk((actions, payload, { getState }) => {
-        actions.addFavourites(payload);
-        localStorage.setItem('favourites', JSON.stringify(getState().favourites));
-    }),
+        if (localStorage.getItem('favourites') === null) {
+            localStorage.setItem('favourites', JSON.stringify([payload]));
+            actions.addFavourites(payload);
+        } else {
+            actions.addFavourites(payload);
+            // console.log(localStorage.getItem('favourites'));
+            let result = JSON.parse(localStorage.getItem('favourites'));
+            result.forEach(element => actions.addFavourites(element));
+            console.log(getState().favourites);
 
+            localStorage.setItem('favourites', JSON.stringify(getState().favourites));
+        }
+    }),
+    
     // Actions for searching
     titles: [],
     addTitles: action((state, payload) => {

@@ -9,12 +9,24 @@ Create a small responsive React web application that searches for movies using R
 ## Resources used
 
 React Bootstrap components [https://react-bootstrap.github.io/]
-RapidAPI for IMDB
+RapidAPI for IMDB, specifically: 
+- [ ]  Movies/TVShows Data (IMDB) (movies-tvshows-data-imdb.p.rapidapi.com) to get an ID from a title query
+- [ ]  Movie Database (IMDB Alternative) API Documentation (movie-database-imdb-alternative.p.rapidapi.com) to get details of the queried show using an ID
 React easy-peasy for state management and storing favourites in localStorage. [https://easy-peasy.vercel.app/]
 
 ## App layout
 
+App loads with a search bar and a view favourites button. The favourites button opens a list of favourites.
+If the user selects a movie, a modal shows containing "more information" from the "By ID or Title API" and an "add to favourites" button.
 
+Only React functional components and hooks are used, also, the Fetch API (JavaScript) is used for all API calls
+
+## Challenges
+
+LocalStorage is possible with state management (easy-peasy in particular) according to easy-peasy API documentation, and requires further study. So far I have had situations where the dictionary was not created, data was lost, data was unretrievable: this could be due to any number of limitations (not excluding understanding).
+In hindsight, maybe producing a completely asynchonous application (save the localStorage calls, because they block the main thread) might have been a better solution. I imagine this approach could be cumbersome and error prone. 
+- Until this line is removed, assume favourites cannot be ammended.
+Although, saving the different views doesn't present any problems. Leaving me to think the problem could be converting the favourites array to a string and vice versa
 
 ## Available Scripts
 

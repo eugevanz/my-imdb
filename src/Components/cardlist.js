@@ -14,7 +14,7 @@ function CardList({ titles }) {
         <Button variant="link" onClick={() => saveViews('card')}><small>View as cards</small></Button>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around', alignItems: 'flex-start' }}>
-            {titles.map(title => <MyCard key={title.imdb_id} title={title}></MyCard>)}
+            {titles.map((title, index) => <MyCard key={index} title={title}></MyCard>)}
         </div>
     </>
 }

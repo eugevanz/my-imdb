@@ -1,4 +1,4 @@
-import { useStoreState, useStoreActions } from 'easy-peasy';
+import { useStoreActions } from 'easy-peasy';
 
 import Image from 'react-bootstrap/Image';
 import Modal from 'react-bootstrap/Modal';
@@ -8,24 +8,13 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
 function MoreInfo({ show, close, title }) {
-    const { favourites } = useStoreState(state => ({
-        favourites: state.favourites,
-    }));
-
     const { saveFavs } = useStoreActions(actions => ({
         saveFavs: actions.saveFavs,
     }));
 
     const uniqueFavsOnly = fav => {
+        saveFavs(fav);
         close();
-        if (localStorage.getItem('favourites') === null) {
-            localStorage.setItem('favourites', 'JSON.stringify([])');
-            saveFavs(fav);
-        } else if (typeof favourites === Array) {
-            if (!favourites.some(element => element.imdb_id === fav.imdb_id)) saveFavs(fav);
-        }
-
-        console.log(localStorage.getItem('favourites'));
     }
 
     return <Modal show={show} onHide={close} aria-labelledby="contained-modal-title-vcenter" size="lg" centered>
