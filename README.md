@@ -21,12 +21,19 @@ If the user selects a movie, a modal shows containing "more information" from th
 
 Only React functional components and hooks are used, also, the Fetch API (JavaScript) is used for all API calls
 
-## Challenges
+## State Management
 
-LocalStorage is possible with state management (easy-peasy in particular) according to easy-peasy API documentation, and requires further study. So far I have had situations where the dictionary was not created, data was lost, data was unretrievable: this could be due to any number of limitations (not excluding understanding).
-In hindsight, maybe producing a completely asynchonous application (save the localStorage calls, because they block the main thread) might have been a better solution. I imagine this approach could be cumbersome and error prone. 
-- Until this line is removed, assume favourites cannot be ammended.
-Although, saving the different views doesn't present any problems. Leaving me to think the problem could be converting the favourites array to a string and vice versa
+easy-peasy handles retreiving the Views and Favourites values from localStorage. It is also responsible for setting these values to localStorage, and making them available to the rest of the app via a stored state.
+The same also stores temporarily the search results from the APIs.
+The state model is made available app-wide with a provider in the app's index file.
+
+## Outstanding challenges
+
+A toast component is available for displaying messages when an "+ Add to favourites" process is triggered, but has not been implemented
+### Work around
+Within the modal component, the current show/movie ID is compared to the IDs within the Favourites database: if the ID exists therein, the "+ Add to favourites" button is removed.
+
+Current there is no implementation to clear the favourites list.
 
 ## Available Scripts
 
