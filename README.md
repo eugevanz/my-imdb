@@ -12,6 +12,10 @@ React Bootstrap components [https://react-bootstrap.github.io/]
 RapidAPI for IMDB
 React easy-peasy for state management and storing favourites in localStorage. [https://easy-peasy.vercel.app/]
 
+## App layout
+
+
+
 ## Available Scripts
 
 In the project directory, you can run:
