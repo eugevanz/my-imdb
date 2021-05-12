@@ -16,7 +16,6 @@ import Button from 'react-bootstrap/Button';
 
 import MyDefaultView from './Views/defaultView';
 import MyFavourites from './Views/favView';
-import MyToast from './Components/toastee';
 
 function App() {
   const { saveTitles, clearTitles } = useStoreActions(actions => ({
@@ -60,7 +59,6 @@ function App() {
           </Route>
         </Switch>
         <br/>
-        <MyToast></MyToast>
       </Container>
     </Router>
   </>

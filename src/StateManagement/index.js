@@ -2,12 +2,6 @@ import { action, thunk, debug } from 'easy-peasy';
 // import http from 'https';
 
 let model = {
-    // Actions for toast
-    toast: false,
-    showToast: action((state, payload) => {
-        state.toast = payload;
-    }),
-
     // Actions for views
     views: localStorage.getItem('view'),
     setViews: action((state, payload) => {
@@ -24,7 +18,7 @@ let model = {
     favourites: localStorage.getItem('favourites') ? JSON.parse(localStorage.getItem('favourites')) : [],
     addFavourites: action((state, payload) => {
         state.favourites.push(payload);
-        console.log(debug(state.favourites));
+        localStorage.setItem('favourites', JSON.stringify(state.favourites));
     }),
     saveFavs: thunk((actions, payload, { getState }) => {
         if (localStorage.getItem('favourites') === null) {
@@ -32,12 +26,6 @@ let model = {
             actions.addFavourites(payload);
         } else {
             actions.addFavourites(payload);
-            // console.log(localStorage.getItem('favourites'));
-            let result = JSON.parse(localStorage.getItem('favourites'));
-            result.forEach(element => actions.addFavourites(element));
-            console.log(getState().favourites);
-
-            localStorage.setItem('favourites', JSON.stringify(getState().favourites));
         }
     }),
     
