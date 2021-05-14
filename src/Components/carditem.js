@@ -11,16 +11,16 @@ function CardItem({ title }) {
     const handleShow = () => setShow(true);
 
     return <>
-        <Card style={{ margin: '1rem' }}>
-        <Card.Img variant="top" src={title.poster} style={{ height: '18rem' }}/>
-        <Card.Body>
-            <Card.Title>{title.title}</Card.Title>
-            <Card.Link onClick={handleShow}><small>More info</small></Card.Link>
-        </Card.Body>
-        <ListGroup variant="flush">
-            <ListGroup.Item><small>Rating {title.imdb_rating}</small></ListGroup.Item>
-            <ListGroup.Item><small>{title.genre}</small></ListGroup.Item>
-        </ListGroup>
+        <Card style={{ margin: '1rem', width: '18rem' }}>
+            <Card.Img variant="top" src={title.poster}/>
+            <Card.Body>
+                <Card.Title>{title.title}</Card.Title>
+                <Card.Link onClick={handleShow}><small>More info</small></Card.Link>
+            </Card.Body>
+            <ListGroup variant="flush">
+                <ListGroup.Item><small>Rating {title.imdb_rating}</small></ListGroup.Item>
+                <ListGroup.Item><small>{title.genre}</small></ListGroup.Item>
+            </ListGroup>
         </Card>
 
         <MyModal show={show} close={handleClose} title={title}></MyModal>
