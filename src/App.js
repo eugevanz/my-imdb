@@ -1,18 +1,7 @@
 import { useStoreActions } from 'easy-peasy';
 import React, { useState } from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
-import { LinkContainer } from 'react-router-bootstrap'
-
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
-import Button from 'react-bootstrap/Button';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Container } from 'react-bootstrap'
 
 import MyDefaultView from './Views/defaultView';
 import MyFavourites from './Views/favView';
@@ -23,30 +12,60 @@ function App() {
     clearTitles: actions.clearTitles,
   }));
   
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState('')
   
   return (<>
     <Router>
-      <Navbar bg="dark" expand="lg" variant="dark">
-        <LinkContainer to="/">
-          <Navbar.Brand href="#">React-IMDB</Navbar.Brand>
-        </LinkContainer>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <LinkContainer to="/favourites">
-              <Nav.Link href="#">Favourites</Nav.Link>
-            </LinkContainer>
-          </Nav>
-          <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" onChange={(e) => setValue(e.target.value)} value={value}/>
-            <Button variant="outline-light" onClick={() => {
-              clearTitles();
-              saveTitles(value);
-            }} disabled={value === ''}>Search</Button>
-          </Form>
-        </Navbar.Collapse>
-      </Navbar>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#navigation">Navbar</a>
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <Link to="/favourites" activeclassname="active" className="nav-link">Home</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/favourites" activeclassname="active" className="nav-link">TV Shows</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/favourites" activeclassname="active" className="nav-link">Movies</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/favourites" activeclassname="active" className="nav-link">Recently Added</Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/favourites" activeclassname="active" className="nav-link"><i className="bi bi-heart-fill"></i></Link>
+              </li>
+            </ul>
+            <div className="dropdown">
+              <a className="dropdown-toggle btn text-white" href="#dropdown-search" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i className="bi bi-search"></i></a>
+              <form className="dropdown-menu dropdown-menu-end px-2">
+                <div className="mb-3">
+                  <input onChange={(e) => setValue(e.target.value)} value={value} type="email" className="form-control form-control-sm" id="exampleDropdownFormEmail1" placeholder="Type to filter..." />
+                </div>
+                <div className="d-grid gap-2">
+                  <button className="btn btn-success btn-lg" onClick={() => {
+                    clearTitles()
+                    saveTitles(value)
+                  }} disabled={value === ''} type="button">Search</button>
+                </div>
+              </form>
+            </div>
+            <a className="btn text-white" href="#notifications" role="button"><i className="bi bi-bell"></i></a>
+            <a className="btn text-white" href="#profile" role="button"><i className="bi bi-person-circle"></i></a>
+          </div>
+        </div>
+      </nav>
+      <div className="text-white bg-dark">
+        <div className="" style={{ padding: '128px' }}>
+          <p className="fs-1">Card title</p>
+          <p className="">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#add-to-list" className="btn btn-primary fw-bold">Add to my list</a>
+        </div>
+      </div>
       
       <Container>
         <br/>
@@ -62,38 +81,6 @@ function App() {
       </Container>
     </Router>
   </>
-    
-    // <div>
-    //   <section>
-    //     <input onChange={(e) => setValue(e.target.value)} value={value} />
-    //     {value !== '' ? <button onClick={() => saveTitles(value)}>Add title</button> : <></>}
-    //   </section>
-
-    //   {titles ? <section>
-    //     <button onClick={() => saveViews('card')}>Card view</button>
-    //     <button onClick={() => saveViews('list')}>List view</button>
-        
-    //     {views === 'list' ? <ul>
-    //       {titles.map(title => <li key={title.imdb_id}>
-    //         <button onClick={() => uniqueFavsOnly(title)}>{title.title}</button>
-    //       </li>)}
-    //     </ul> : <ol>
-    //       {titles.map(title => <li key={title.imdb_id}>
-    //         <button onClick={() => uniqueFavsOnly(title)}>{title.title}</button>
-    //       </li>)}
-    //     </ol>}
-    //   </section> : <></>}
-
-    //   {typeof favourites === Array ? <section>
-    //     <ul>
-    //       {favourites.map(fav => <li key={fav.imdb_id}>{fav.title}</li>)}
-    //     </ul>
-    //   </section> : <section>
-    //     <ul>
-    //       {(JSON.parse(localStorage.getItem('favourites'))).map(fav => <li key={fav.imdb_id}>{fav.title}</li>)}
-    //     </ul>
-    //   </section>}
-    // </div>
   );
 }
 
