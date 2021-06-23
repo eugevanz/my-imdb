@@ -1,18 +1,25 @@
-import { useStoreActions } from 'easy-peasy';
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { Container } from 'react-bootstrap'
+import { useStoreActions, useStoreState } from 'easy-peasy'
+import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import { rating, schedule, genres } from './helper'
 
 import MyDefaultView from './Views/defaultView';
 import MyFavourites from './Views/favView';
 
 function App() {
-  const { saveTitles, clearTitles } = useStoreActions(actions => ({
+  const { saveTitles, saveFavs } = useStoreActions(actions => ({
     saveTitles: actions.saveTitles,
-    clearTitles: actions.clearTitles,
-  }));
-  
+    saveFavs: actions.saveFavs
+  }))
+  const { titles } = useStoreState(state => ({
+    titles: state.titles,
+  }))
   const [value, setValue] = useState('')
+  const links = { 'Home': '/', 'Drama': '/favourites', 'Romance': '/favourites', 'Horror': '/favourites', 'Documentary': '/favourites'}
+
+  useEffect(() => {
+    if (titles.length < 1) saveTitles('girls')
+  });
   
   return (<>
     <Router>
@@ -24,18 +31,9 @@ function App() {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <Link to="/favourites" activeclassname="active" className="nav-link">Home</Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/favourites" activeclassname="active" className="nav-link">TV Shows</Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/favourites" activeclassname="active" className="nav-link">Movies</Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/favourites" activeclassname="active" className="nav-link">Recently Added</Link>
-              </li>
+              { Object.keys(links).map(item => <li className="nav-item" key={ item }>
+                <Link to={ links[item] } activeclassname="active" className="nav-link">{ item }</Link>
+              </li>) }
               <li className="nav-item">
                 <Link to="/favourites" activeclassname="active" className="nav-link"><i className="bi bi-heart-fill"></i></Link>
               </li>
@@ -48,7 +46,7 @@ function App() {
                 </div>
                 <div className="d-grid gap-2">
                   <button className="btn btn-success btn-lg" onClick={() => {
-                    clearTitles()
+                    // clearTitles()
                     saveTitles(value)
                   }} disabled={value === ''} type="button">Search</button>
                 </div>
@@ -59,15 +57,33 @@ function App() {
           </div>
         </div>
       </nav>
-      <div className="text-white bg-dark">
-        <div className="" style={{ padding: '128px' }}>
-          <p className="fs-1">Card title</p>
-          <p className="">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#add-to-list" className="btn btn-primary fw-bold">Add to my list</a>
+      { titles.length > 0 && <div className="bg-dark" style={{ padding: '128px' }}>
+        <div className="" style={{ maxWidth: '576px' }}>
+          <p className="text-white fs-1">{ titles[0].show.name }</p>
+          <span className="text-white" dangerouslySetInnerHTML={{__html: titles[0].show.summary}}></span>
+          <div  className="text-white" style={{ maxWidth: '288px' }}>
+            <div className="m-1">{ rating(titles[0].show.rating.average) }<b> / 10</b></div>
+            { genres(titles[0].show.genres) }
+            <span className="badge bg-danger rounded-pill m-1">
+              <small>{ titles[0].show.network.name }</small>
+            </span>
+            <span className="badge bg-success rounded-pill m-1">
+              <small>{ titles[0].show.language }</small>
+            </span>
+            <span className="badge bg-primary rounded-pill m-1">
+              <small>{ titles[0].show.schedule.time }</small>
+            </span>
+            { schedule(titles[0].show.schedule.days) }
+            <div>
+              <span className="badge bg-dark rounded-pill mb-4 " style={{ width: '6rem' }}>
+                <small>Released on <b>{ titles[0].show.premiered }</b></small>
+              </span>
+            </div>
+          </div>
+          <a onClick={() => saveFavs()} href="#add-to-list" className="btn btn-outline-primary fw-bold m-1"><i className="bi bi-pin"></i> Add to my list</a>
         </div>
-      </div>
-      
-      <Container>
+      </div> }
+      <div className="container">
         <br/>
         <Switch>
           <Route path="/favourites">
@@ -78,10 +94,9 @@ function App() {
           </Route>
         </Switch>
         <br/>
-      </Container>
+      </div>
     </Router>
-  </>
-  );
+  </>)
 }
 
 export default App;
