@@ -19,18 +19,25 @@ let model = {
       state.favourites.push(payload);
       localStorage.setItem('favourites', JSON.stringify(state.favourites));
     }),
-    saveFavs: thunk((actions, payload, { getState }) => {
+    saveFavs: thunk((actions, payload, { getStoreState }) => {
       if (localStorage.getItem('favourites') === null) {
         localStorage.setItem('favourites', JSON.stringify([payload]));
         actions.addFavourites(payload);
       } else {
-        actions.addFavourites(payload);
+        const fav = getStoreState().favourites
+        fav.forEach(obj => {
+          if (!fav.find(item => item.show.id === payload.show.id)) {
+            actions.addFavourites(payload)
+          }
+        });
       }
     }),
     // Actions for searching
-    titles: [],
+    titles: {},
+    heroTITLE: {},
     addTitles: action((state, payload) => {
-      state.titles = payload;
+      state.titles[payload.show.id] = payload
+      state.heroTITLE = state.titles[payload.show.id]
     }),
     clearTitles: action((state) => {
       state.titles = [];
@@ -38,7 +45,9 @@ let model = {
     saveTitles: thunk((actions, payload) => Promise.all([
       fetch(`http://api.tvmaze.com/search/shows?q=${payload}`).then(response => response.json()).then(data => data)
     ]).then(values => {
-      actions.addTitles(values[0])
-    }))
+      for (const key in values[0]) {
+        if (Object.hasOwnProperty.call(values[0], key)) actions.addTitles(values[0][key])
+      }
+    }).catch(err => console.log(err)))
 }
 export default model;

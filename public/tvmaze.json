@@ -2,11 +2,11 @@
   "score": "0.48308793",
     "show":
       "averageRuntime": 30
-      "dvdCountry": null
-      "externals": {tvrage: 30124, thetvdb: 220411, imdb: "tt1723816"}
-      genres: (2) ["Drama", "Romance"]
-      id: 139
-      image: {medium: "https://static.tvmaze.com/uploads/images/medium_portrait/31/78286.jpg", original: "https://static.tvmaze.com/uploads/images/original_untouched/31/78286.jpg"}
+      "dvdCountry": "null"
+      "externals": {"tvrage": "30124", "thetvdb": "220411", "imdb": "tt1723816"}
+      "genres": (2) ["Drama", "Romance"]
+      "id": 139
+      "image": {medium: "https://static.tvmaze.com/uploads/images/medium_portrait/31/78286.jpg", original: "https://static.tvmaze.com/uploads/images/original_untouched/31/78286.jpg"}
       language: "English"
       name: "Girls"
       network: {id: 8, name: "HBO", country: {…}}
