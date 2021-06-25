@@ -1,60 +1,63 @@
-import fallbackIMG from './mountains-sunset-landscape-fox-art-vector.jpg'
-import { useStoreActions, useStoreState } from 'easy-peasy';
-// import { rating, genres, schedule } from '../helper';
+import CardItem from '../Components/carditem';
+import { useStoreState, useStoreActions } from 'easy-peasy';
 
 function DefaultView () {
+  const { titles, heroTITLE, favourites } = useStoreState(state => ({
+    titles: Object.values(state.titles),
+    heroTITLE: state.heroTITLE,
+    favourites: state.favourites
+  }))
   const { setFAVE } = useStoreActions(actions => ({
     setFAVE: actions.setFAVE
   }))
-  const { titles, favourites } = useStoreState(state => ({
-    titles: Object.values(state.titles),
-    favourites: state.favourites
-  }))
-  function btnCOLOR (id) { return id in favourites ? 'text-danger' : 'text-white' }
+  function btnCOLOR () { return heroTITLE.id in favourites ? 'btn-outline-danger' : 'btn-outline-primary' }
+  function btnTEXT () { return heroTITLE.id in favourites ? 'Remove from list' : 'Add to my list' }
+  
   return <>
-    <div className="card-group">
-      { titles.map(item => <div className="card p-md-5 p-3 bg-dark border-0" key={ item.id } style={{ minWidth: '320px', maxWidth: '384px' }}>
-        { <a onClick={() => setFAVE(item)} className="btn" href="#notifications" role="button" style={{ width: '64px' }}>
-          <i className={ `bi bi-pin-fill ${ btnCOLOR(item.id) }` }></i>
-        </a> ?? <a className="btn" href="#notifications" role="button" style={{ width: '64px' }}>
-          <i className="bi bi-pin-fill text-muted"></i>
-        </a> }
-        <div className="row g-0 mb-3">
+    <div className="card bg-dark border-0" style={{ paddingTop: '128px', borderRadius: '0' }}>
+      <div className="container" style={{ marginBottom: '128px' }}>
+        <div className="row">
           <div className="col-4">
-            <img src={ item.image?.original ?? fallbackIMG } className="img-thumbnail" alt="..." width="64"></img>
+            <img src={ heroTITLE.image?.original ?? `${process.env.PUBLIC_URL}/mountains-sunset-landscape-fox-art-vector.jpg` } className="img-thumbnail" alt="..."></img>
           </div>
           <div className="col-8">
-            <p className="card-title fs-2 text-muted">{ item.name ?? 'No title' }</p>
+          <p className="text-white fs-1">{ heroTITLE.name ?? 'No title' }</p>
+            <div style={{ maxWidth: '512px' }}>
+                { <span className="text-white" dangerouslySetInnerHTML={{ __html: heroTITLE.summary }}></span> ?? <span className="text-white"><i>No further details provided</i></span> }
+              </div>
+            <div className="text-white" style={{ maxWidth: '288px' }}>
+              <div className="m-1">{ heroTITLE.rating?.average ?? '0' }<b> / 10</b> <i className="bi bi-star-fill text-warning"></i></div>
+              { Object.values(heroTITLE.genres ?? ['Genre']).map(item => <span key={ item } className="badge bg-secondary rounded-pill m-1">
+                <small>{ item }</small>
+              </span>) }
+              <span className="badge bg-danger rounded-pill m-1">
+                <small>{ heroTITLE.network?.name ?? 'No network' }</small>
+              </span>
+              <span className="badge bg-success rounded-pill m-1">
+                <small>{ heroTITLE.language ?? 'No language' }</small>
+              </span>
+              <span className="badge bg-primary rounded-pill m-1">
+                <small>{ heroTITLE.schedule?.time ?? '00:00' }</small>
+              </span>
+              { heroTITLE.schedule?.days.map(item => <span key={ item } className="badge bg-warning text-dark rounded-pill m-1">
+                <small>{ item }</small>
+              </span> ) ??  <span className="badge bg-warning text-dark rounded-pill m-1">
+                <small>Someday</small>
+              </span> }
+              <div>
+                <span className="badge bg-dark rounded-pill m-1">
+                  <small>Released on <b>{ heroTITLE.premiered ?? 'unknown date' }</b></small>
+                </span>
+              </div>
+            </div>
+            <a onClick={() => setFAVE(heroTITLE)} href="#add-to-list" className={ `${ btnCOLOR() } btn fw-bold m-1 mt-5` }><i className="bi bi-pin"></i> { btnTEXT() }</a>
           </div>
         </div>
-        <div>
-          { Object.values(item.genres ?? ['Genre']).map(genre => <span key={ genre } className="badge bg-secondary rounded-pill m-1">
-            <small>{ genre }</small>
-          </span>) }
-          <span className="badge bg-secondary rounded-pill m-1">
-            <small>{ item.network?.name ?? 'No network' }</small>
-          </span>
-          <span className="badge bg-secondary rounded-pill m-1">
-            <small>{ item.language ?? 'No language' }</small>
-          </span>
-          <span className="badge bg-secondary rounded-pill m-1">
-            <small>{ item.schedule?.time ?? '00:00' }</small>
-          </span>
-          { item.schedule?.days.map(day => <span key={ day } className="badge bg-warning text-dark rounded-pill m-1">
-            <small>{ day }</small>
-          </span>) ?? <span className="badge bg-warning text-dark rounded-pill m-1">
-            <small>Someday</small>
-          </span> }
-          <div>
-            <span className="badge bg-dark rounded-pill m-1">
-              <small>Released on <b>{ item.premiered ?? 'unknown date' }</b></small>
-            </span>
-          </div>
-          <div className="m-1 text-white">{ Math.floor(item.rating?.average) ?? '0' }<b> / 10</b> <i className="bi bi-star-fill text-warning"></i></div>
-        </div>
-      </div>) ?? <p>Loading...</p> }
+      </div>
+    </div>
+    <div className="card-group">
+      { titles.map((item, index) => <CardItem key={ index } item={ item } />) ?? <p className="text-white">Loading...</p> }
     </div>
   </>
 }
-
 export default DefaultView;

@@ -1,39 +1,13 @@
-import { useStoreState } from 'easy-peasy';
-
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Alert from 'react-bootstrap/Alert';
-
-import MyMainlist from '../Components/mainlist';
-import MyCardlist from '../Components/cardlist';
+import { useStoreState } from 'easy-peasy'
+import CardItem from '../Components/carditem'
 
 function Favourites() {
-    const { favourites, views } = useStoreState(state => ({
-        favourites: state.favourites,
-        views: state.views,
-    }));
-    // console.log(typeof favourites);
+  const { favourites } = useStoreState(state => ({
+    favourites: Object.values(state.favourites)
+  }))
 
-    return <>
-        <Row>
-            <Col>
-                <Alert variant='primary'>Showing my favourites</Alert>
-            </Col>
-        </Row>
-        <Row>
-            <Col>
-                {views === 'list' ? <MyMainlist titles={Array.from(favourites)}></MyMainlist> : <MyCardlist titles={Array.from(favourites)}></MyCardlist>}
-            </Col>
-        </Row>
-        {/* {typeof favourites === Object ? <Row>
-            <Col>
-                {views === 'list' ? <MyMainlist titles={favourites}></MyMainlist> : <MyCardlist titles={favourites}></MyCardlist>}
-            </Col>
-        </Row> : <Row>
-            <Col>
-                {views === 'list' ? <MyMainlist titles={JSON.parse(localStorage.getItem('favourites'))}></MyMainlist> : <MyCardlist titles={JSON.parse(localStorage.getItem('favourites'))}></MyCardlist>}
-            </Col>
-        </Row>} */}
-    </>
+  return <div className="card-group">
+    { favourites.map((item, index) => <CardItem key={ index } item={ item } />) ?? <p className="text-white">Loading...</p> }
+  </div>
 }
 export default Favourites;

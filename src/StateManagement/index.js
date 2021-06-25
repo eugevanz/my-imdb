@@ -1,5 +1,4 @@
-import { action, thunk, debug } from 'easy-peasy';
-// import http from 'https';
+import { action, thunk, debug } from 'easy-peasy'
 
 let model = {
     // Actions for views
