@@ -14,40 +14,39 @@ let model = {
     }),
     // Actions for Favourites
     // favourites: JSON.parse(localStorage.getItem('favourites')),
-    favourites: localStorage.getItem('favourites') ? JSON.parse(localStorage.getItem('favourites')) : [],
-    addFavourites: action((state, payload) => {
-      state.favourites.push(payload);
-      localStorage.setItem('favourites', JSON.stringify(state.favourites));
+    favourites: JSON.parse(localStorage.getItem('favourites')) ?? {},
+    addFAVE: action((state, payload) => {
+      if (payload.id in state.favourites) {
+        delete state.favourites[payload.id]
+      } else { state.favourites[payload.id] = payload }
+      localStorage.setItem('favourites', JSON.stringify(state.favourites))
     }),
-    saveFavs: thunk((actions, payload, { getStoreState }) => {
-      if (localStorage.getItem('favourites') === null) {
-        localStorage.setItem('favourites', JSON.stringify([payload]));
-        actions.addFavourites(payload);
-      } else {
-        const fav = getStoreState().favourites
-        fav.forEach(obj => {
-          if (!fav.find(item => item.show.id === payload.show.id)) {
-            actions.addFavourites(payload)
-          }
-        });
-      }
+    setFAVE: thunk((actions, payload) => {
+      actions.addFAVE(payload)
     }),
     // Actions for searching
     titles: {},
     heroTITLE: {},
     addTitles: action((state, payload) => {
-      state.titles[payload.show.id] = payload
-      state.heroTITLE = state.titles[payload.show.id]
+      state.titles[payload.id] = payload
     }),
-    clearTitles: action((state) => {
-      state.titles = [];
+    clearTITLES: action((state) => { state.titles = {} }),
+    addHERO: action((state, payload) => {
+      state.heroTITLE = payload
     }),
-    saveTitles: thunk((actions, payload) => Promise.all([
-      fetch(`http://api.tvmaze.com/search/shows?q=${payload}`).then(response => response.json()).then(data => data)
-    ]).then(values => {
-      for (const key in values[0]) {
-        if (Object.hasOwnProperty.call(values[0], key)) actions.addTitles(values[0][key])
-      }
-    }).catch(err => console.log(err)))
+    saveTitles: thunk((actions, payload) => {
+      actions.clearTITLES()
+      Promise.all([
+        fetch(`http://api.tvmaze.com/search/shows?q=${payload}`).then(response => response.json()).then(data => data)
+      ]).then(values => {
+        for (const key in values[0]) {
+          const item = values[0][key]
+          if (Object.hasOwnProperty.call(values[0], key)) {
+            actions.addTitles(item.show)
+            actions.addHERO(item.show)
+          }
+        }
+      }).catch(err => console.log(err))
+    })
 }
 export default model;

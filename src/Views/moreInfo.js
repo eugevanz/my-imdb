@@ -12,8 +12,8 @@ import Button from 'react-bootstrap/Button';
 // import MyToast from '../Components/toastee';
 
 function MoreInfo({ show, close, title }) {
-    const { saveFavs } = useStoreActions(actions => ({
-        saveFavs: actions.saveFavs,
+    const { setFAVE } = useStoreActions(actions => ({
+        setFAVE: actions.setFAVE,
     }));
 
     const { favourites } = useStoreState(state => ({
@@ -23,7 +23,7 @@ function MoreInfo({ show, close, title }) {
     // const [toast, setToast] = useState(false);
 
     const uniqueFavsOnly = fav => {
-        saveFavs(fav);
+        setFAVE(fav);
         close();
     }
     
