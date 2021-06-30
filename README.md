@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Application spec description
 
-Create a small responsive React web application that searches for movies using Rapid API IMDB "by search" API and lists search results in a selectable list that can be toggled to a card layout with a more information display from the IMDB "By ID or Title" API on selection and a favourites list.
+A small responsive React web application that searches for movies using TVMaze API for TV shows, and lists search results in a selectable list of cards layout with a more information display from the API on your selection and a favourites list.
 
 ## Resources used
 
